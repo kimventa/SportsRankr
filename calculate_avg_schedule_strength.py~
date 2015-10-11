@@ -1,0 +1,30 @@
+import pandas as pd
+
+week = '5'
+
+games = pd.read_pickle('games.pkl')
+ranks = pd.read_pickle('ratingsTable_final3.pkl')
+
+seasonGames = games[(games.season == 2015)]
+avgstrength = 0
+for team in seasonGames.Team.unique():
+	teamgames = seasonGames[seasonGames.Team == team]
+	opponents = []
+	strength = 0
+	for i in range(len(teamgames)):
+		game = teamgames.iloc[i]
+		if game.winner == team:
+			opponents.append(game.loser)
+		else:
+			opponents.append(game.winner)
+	for opponent in opponents:
+		try:
+			oppstrength = ranks[(ranks.Team == opponent) & (ranks.season == '2015') & (ranks.Week == week)].Rating.values[0]
+		except IndexError:
+			oppstrength = 1
+		strength += oppstrength
+	strength = strength/len(opponents)
+	avgstrength += strength
+	
+avgstrength = avgstrength/len(seasonGames.Team.unique())
+print avgstrength

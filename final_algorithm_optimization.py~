@@ -1,0 +1,15 @@
+import pandas as pd
+from scipy.optimize import fmin_tnc
+import final_algorithm2010
+import time
+#import MySQLdb as mdb
+
+start_time = time.time()
+
+x0 = [13.5,8.3,0.0001,0.6,5,7.6] #initial guesses for all TrueSkillfn inputs
+bounds = [(0.00001,None), (0.00001,None), (0.00001,None), (0.00001,None), (0.00001,None), (0.00001,None)]
+
+x, nfeval, rc = fmin_tnc(func=TrueSkillTNCv5quicktest.main, x0=x0, fprime=None, approx_grad=True, bounds=bounds) #, minimizer_kwargs=minimizer_kwargs,niter=200)
+
+print '%s seconds' % (time.time() - start_time)
+print("global minimum: x = [%.4f, %.4f, %.4f, %.4f] f(x0) = %.4f" % (ret.x[0],ret.x[1], ret.x[2], ret.x[3], ret.fun))
