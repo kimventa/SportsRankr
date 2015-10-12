@@ -8,15 +8,21 @@ import numpy as np
 import scipy.stats
 
 
-login = pd.read_pickle('credentials.pkl')
-username = login.usernames.ix[0]
-password = login.passwords.ix[0]
-db = mdb.connect(user = username, host = "localhost", password = password, db = "NCAA", charset = 'utf8')
+#login = pd.read_pickle('credentials.pkl')
+#username = login.usernames.ix[0]
+#password = login.passwords.ix[0]
+#db = mdb.connect(user = username, host = "localhost", password = password, db = "NCAA", charset = 'utf8')
 	
 @app.route('/')
 @app.route('/index')
 def homepage():
 	print 'first line of homepage in views.py'
+	
+	login = pd.read_pickle('credentials.pkl')
+	username = login.usernames.ix[0]
+	password = login.passwords.ix[0]
+	db = mdb.connect(user = username, host = "localhost", password = password, db = "NCAA", charset = 'utf8')
+	
 	with db:
 		cur = db.cursor()
 		cur.execute("select Team from D1A group by Team")
@@ -72,6 +78,12 @@ def team_output():
 	#pull 'ID' from input field and store it
 	team = request.args.get('ID')
 	team = fix_teamname(team)
+	
+	login = pd.read_pickle('credentials.pkl')
+	username = login.usernames.ix[0]
+	password = login.passwords.ix[0]
+	db = mdb.connect(user = username, password = password, db = "NCAA", charset = 'utf8')
+	
 	
 	with db:
                 print 'start of sql queries'
