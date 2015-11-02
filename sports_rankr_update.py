@@ -156,6 +156,8 @@ def main():
 		
 	data = {'season': str(year), 'Week': str(week), 'Team': ratings[0], 'RatingMu': ratingsmu, 'RatingSigma': ratingssigma, 'Rating': TSrating}
 	teamRatings = pd.DataFrame(data) #,index=[1])
+	D1A = pd.read_pickle('D1A.pkl')
+	teamRatings = teamRatings[teamRatings.Team.isin(list(D1A.team))]
 	teamRatings['Rank'] = len(teamRatings.index)-np.argsort(teamRatings.sort(['Rating'],ascending=False),axis=0).Rating
 	ratingsTable = teamRatings.copy()	
 		
